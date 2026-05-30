@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indecor - Premium Home Decor</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --primary-rgb: 255, 107, 107;
+            --secondary: #1a1a1a;
+            --secondary-rgb: 26, 26, 26;
+            --border-color: #e8e8e8;
+            --bg-light: #f9f9f9;
+            --text-dark: #333333;
+            --text-gray: #666666;
+        }
+
+        * {
+            font-family: 'Lato', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            color: var(--secondary);
+        }
+
+        .text-primary {
+            color: var(--primary);
+        }
+
+        .bg-primary {
+            background-color: var(--primary);
+        }
+
+        .border-primary {
+            border-color: var(--primary);
+        }
+
+        .hover-primary:hover {
+            color: var(--primary);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-sale {
+            background-color: var(--bg-light);
+            color: var(--secondary);
+        }
+
+        .collection-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .collection-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(26, 26, 26, 0);
+            transition: background 0.3s ease;
+            z-index: 1;
+        }
+
+        .collection-card:hover::before {
+            background: rgba(26, 26, 26, 0.1);
+        }
+
+        .underline-accent {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        .underline-accent::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .collection-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <!-- HEADER -->
+    <header class="border-b border-gray-200 sticky top-0 bg-white z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-secondary">indecor<span class="text-primary">.</span></h1>
+                </div>
+
+                <!-- Navigation - Desktop -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#" class="text-secondary hover:text-primary transition">HOME</a>
+                    <a href="#" class="text-secondary hover:text-primary transition">SHOP</a>
+                    <a href="#" class="text-secondary hover:text-primary transition">PRODUCTS</a>
+                    <a href="#" class="text-secondary hover:text-primary transition">BLOG</a>
+                    <a href="#" class="text-secondary hover:text-primary transition">PAGES</a>
+                </nav>
+
+                <!-- Icons -->
+                <div class="flex items-center gap-4">
+                    <button class="p-2 hover:bg-gray-100 rounded-lg transition">
+                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                    <button class="p-2 hover:bg-gray-100 rounded-lg transition">
+                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </button>
+                    <button class="relative p-2 hover:bg-gray-100 rounded-lg transition">
+                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <span class="absolute top-0 right-0 w-5 h-5 bg-primary text-white text-xs rounded-full flex items-center justify-center">0</span>
+                    </button>
+                    <span class="text-secondary font-semibold">$0.00</span>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="bg-gradient-to-b from-gray-50 to-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- Hero Image -->
+                <div class="flex justify-center">
+                    <div class="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1563621446-da8f5b0223e7?w=500&h=500&fit=crop" alt="Featured Product" class="w-full h-full object-cover rounded-lg">
+                    </div>
+                </div>
+
+                <!-- Hero Content -->
+                <div class="space-y-6">
+                    <p class="text-gray-600 text-sm">let's solve hunger together with monthly Offer</p>
+                    <h2 class="text-5xl md:text-6xl font-bold text-secondary leading-tight">TUMBLER ALARM CLOCK</h2>
+                    <button class="btn-primary px-8 py-3 text-white font-semibold hover-primary transition">
+                        SHOP NOW
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES BAR -->
+    <section class="py-16 bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="border border-gray-300 rounded-lg p-6 flex items-center gap-4 hover:shadow-md transition">
+                    <svg class="w-8 h-8 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    </svg>
+                    <div>
+                        <h3 class="font-bold text-secondary">FREE SHIPPING WORLDWIDE</h3>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="border border-gray-300 rounded-lg p-6 flex items-center gap-4 hover:shadow-md transition">
+                    <svg class="w-8 h-8 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                    <div>
+                        <h3 class="font-bold text-secondary">FREE SHIPPING WORLDWIDE</h3>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="border border-gray-300 rounded-lg p-6 flex items-center gap-4 hover:shadow-md transition">
+                    <svg class="w-8 h-8 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <div>
+                        <h3 class="font-bold text-secondary">FREE SHIPPING WORLDWIDE</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW ARRIVALS & FEATURED PRODUCTS -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-center text-3xl font-bold mb-4"><span class="underline-accent">NEW ARRIVALS</span></h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">PRODUCT DUMMY TITLE</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$110.00</span>
+                        <span class="text-gray-400 line-through">$130.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">PRODUCT TITLE HERE</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$19.00</span>
+                        <span class="text-gray-400 line-through">$21.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1578500494198-246f612d03b3?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">DUMMY TEXT FOR TITLE</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$39.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1578500494198-246f612d03b3?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">ANOTHER PRODUCT</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$49.00</span>
+                        <span class="text-gray-400 line-through">$65.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COLLECTIONS -->
+    <section class="py-20 bg-var(--bg-light)">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <p class="text-gray-600 text-sm font-semibold mb-2">OUR COLLECTIONS</p>
+                <h2 class="text-4xl font-bold text-secondary">HOT CATEGORIES IN THIS WEEK</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 collection-grid">
+                <!-- Collection 1 -->
+                <div class="collection-card bg-white rounded-lg overflow-hidden border border-gray-200 cursor-pointer">
+                    <div class="h-72 bg-gray-100 flex items-center justify-center overflow-hidden relative z-0">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&fit=crop" alt="Furniture" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-bold text-secondary">Furniture</h3>
+                    </div>
+                </div>
+
+                <!-- Collection 2 -->
+                <div class="collection-card bg-white rounded-lg overflow-hidden border border-gray-200 cursor-pointer">
+                    <div class="h-72 bg-gray-100 flex items-center justify-center overflow-hidden relative z-0">
+                        <img src="https://images.unsplash.com/photo-1578500494198-246f612d03b3?w=400&h=400&fit=crop" alt="Lighting" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-bold text-secondary">Lighting</h3>
+                    </div>
+                </div>
+
+                <!-- Collection 3 -->
+                <div class="collection-card bg-white rounded-lg overflow-hidden border border-gray-200 cursor-pointer lg:col-span-2 md:col-span-2">
+                    <div class="h-72 bg-gray-100 flex items-center justify-center overflow-hidden relative z-0">
+                        <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=300&fit=crop" alt="House Hold" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 flex items-center justify-center h-24">
+                        <h3 class="text-3xl font-bold text-secondary text-center">HOUSE<br>HOLD</h3>
+                    </div>
+                </div>
+
+                <!-- Collection 4 -->
+                <div class="collection-card bg-white rounded-lg overflow-hidden border border-gray-200 cursor-pointer">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden relative z-0">
+                        <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=400&h=400&fit=crop" alt="Planters" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-lg font-bold text-secondary">Planters</h3>
+                    </div>
+                </div>
+
+                <!-- Collection 5 -->
+                <div class="collection-card bg-white rounded-lg overflow-hidden border border-gray-200 cursor-pointer">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden relative z-0">
+                        <img src="https://images.unsplash.com/photo-1541308859033-f45db33fbcc1?w=400&h=400&fit=crop" alt="Clocks" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-lg font-bold text-secondary">Clocks</h3>
+                    </div>
+                </div>
+
+                <!-- Collection 6 -->
+                <div class="collection-card bg-white rounded-lg overflow-hidden border border-gray-200 cursor-pointer">
+                    <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden relative z-0">
+                        <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop" alt="Home Decor" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-lg font-bold text-secondary">HOME<br>DECOR</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR PRODUCTS -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
+                <div>
+                    <h2 class="text-4xl font-bold text-secondary border-l-4 border-primary pl-4">OUR<br>PRODUCTS</h2>
+                </div>
+                
+                <div class="flex gap-4 mt-6 md:mt-0">
+                    <button class="text-primary font-semibold border-b-2 border-primary pb-2">Best Seller</button>
+                    <button class="text-gray-600 hover-primary transition">Deal Product</button>
+                    <button class="text-gray-600 hover-primary transition">Most View</button>
+                </div>
+
+                <div class="flex gap-2 mt-6 md:mt-0">
+                    <button class="p-2 border border-gray-300 rounded hover:bg-gray-100 transition">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <button class="p-2 border border-gray-300 rounded hover:bg-gray-100 transition">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="relative bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <span class="absolute top-4 left-4 bg-gray-200 text-gray-700 px-3 py-1 text-xs font-semibold rounded">Sale</span>
+                        <span class="absolute top-4 right-4 bg-gray-200 text-gray-700 px-3 py-1 text-xs font-semibold rounded">-27%</span>
+                        <img src="https://images.unsplash.com/photo-1578500494198-246f612d03b3?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">6. VARIABLE WITH SOLDOUT PRODUCT</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$55.00</span>
+                        <span class="text-gray-400 line-through">$75.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">5. SIMPLE PRODUCT</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$50.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="relative bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <span class="absolute top-4 right-4 bg-gray-200 text-gray-700 px-3 py-1 text-xs font-semibold rounded">-34%</span>
+                        <img src="https://images.unsplash.com/photo-1563621446-da8f5b0223e7?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">9. WITHOUT SHORTCODE PRODUCT</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$79.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="relative bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <span class="absolute top-4 left-4 bg-gray-200 text-gray-700 px-3 py-1 text-xs font-semibold rounded">Soldout</span>
+                        <img src="https://images.unsplash.com/photo-1578500494198-246f612d03b3?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">4. SOLDOUT PRODUCT</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$19.00</span>
+                        <span class="text-gray-400 line-through">$29.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="relative bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <span class="absolute top-4 left-4 bg-gray-200 text-gray-700 px-3 py-1 text-xs font-semibold rounded">Sale</span>
+                        <span class="absolute top-4 right-4 bg-gray-200 text-gray-700 px-3 py-1 text-xs font-semibold rounded">-18%</span>
+                        <img src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">3. VARIABLE PRODUCT</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$40.00</span>
+                        <span class="text-gray-400 line-through">$85.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1541308859033-f45db33fbcc1?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">2. NEW BADGE PRODUCT</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$80.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card">
+                    <div class="relative bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <span class="absolute top-4 right-4 bg-gray-200 text-gray-700 px-3 py-1 text-xs font-semibold rounded">-34%</span>
+                        <img src="https://images.unsplash.com/photo-1578500494198-246f612d03b3?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">7. ANOTHER PRODUCT</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$45.00</span>
+                        <span class="text-gray-400 line-through">$65.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card">
+                    <div class="bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1563621446-da8f5b0223e7?w=300&h=300&fit=crop" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="font-bold text-secondary mb-2">1. SIMPLE ITEM</h3>
+                    <div class="flex gap-2 mb-4">
+                        <span class="text-primary font-bold">$25.00</span>
+                    </div>
+                    <button class="btn-secondary w-full py-2 rounded transition">ADD TO CART</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BLOG SECTION -->
+    <section class="py-20 bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-center text-4xl font-bold mb-12 text-secondary">Latest Blog Posts</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Blog Post 1 -->
+                <div class="group">
+                    <div class="bg-gray-200 rounded-lg h-64 mb-6 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&h=400&fit=crop" alt="Blog" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                    </div>
+                    <h3 class="text-2xl font-bold text-secondary mb-3 group-hover:text-primary transition">TEMPORIBUS AUTEM QUIBUSDAM</h3>
+                    <p class="text-gray-600 text-sm mb-4">Post By: <span class="text-primary">Indecor-Demo Admin</span> • Nov 05, 18</p>
+                    <a href="#" class="text-secondary font-semibold hover:text-primary transition border-b border-gray-300 pb-1">READ MORE</a>
+                </div>
+
+                <!-- Blog Post 2 -->
+                <div class="group">
+                    <div class="bg-gray-200 rounded-lg h-64 mb-6 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=400&fit=crop" alt="Blog" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                    </div>
+                    <h3 class="text-2xl font-bold text-secondary mb-3 group-hover:text-primary transition">TEMPORIBUS AUTEM QUIBUSDAM</h3>
+                    <p class="text-gray-600 text-sm mb-4">Post By: <span class="text-primary">Indecor-Demo Admin</span> • Nov 05, 18</p>
+                    <a href="#" class="text-secondary font-semibold hover:text-primary transition border-b border-gray-300 pb-1">READ MORE</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-100 py-16 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Footer Content -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- About -->
+                <div>
+                    <h3 class="text-2xl font-bold text-secondary mb-4">indecor<span class="text-primary">.</span></h3>
+                    <p class="text-gray-600 text-sm mb-6">Mauris interdum magna eu neque convallis, vel laoreet lectus ultrices. Mauris at ullamcorper orci. Maecenas in nulla erat.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-gray-500 hover:text-primary transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-primary transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-primary transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <rect width="24" height="24" fill="none"></rect>
+                                <circle cx="12" cy="12" r="1"></circle>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-primary transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.146 5.543c0-.322-.066-.644-.198-.966.397-.602.727-1.282.986-2.039a.74.74 0 0 0-.644-1.054.768.768 0 0 0-.67.463 6.51 6.51 0 0 1-1.864.982.74.74 0 0 0-.85.057 4.736 4.736 0 0 1-3.262 1.298 4.75 4.75 0 1 1 0-9.5 4.764 4.764 0 0 1 4.75 4.75v.22a10.546 10.546 0 0 0 2.35-.165.74.74 0 1 0-.158-1.474 9.08 9.08 0 0 1-2.024.157 4.74 4.74 0 0 1-4.568-4.573 3.27 3.27 0 1 0 6.484 1.156c.628-.132 1.256-.331 1.865-.595a.74.74 0 0 0 .402-1.02z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Information -->
+                <div>
+                    <h4 class="font-bold text-secondary mb-6">INFORMATION</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">About Us</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">Delivery Information</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">Terms & Conditions</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Extras -->
+                <div>
+                    <h4 class="font-bold text-secondary mb-6">EXTRAS</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">Brands</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">Gift Certificates</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">Affiliate</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">Specials</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary transition text-sm">Returns</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="font-bold text-secondary mb-6">SEND NEWSLETTER</h4>
+                    <p class="text-gray-600 text-sm mb-4">Sign up for our newsletter & promotions</p>
+                    <div class="flex">
+                        <input type="email" placeholder="email@example.com" class="flex-1 px-4 py-2 border border-gray-300 rounded-l text-sm focus:outline-none">
+                        <button class="btn-primary px-4 py-2 rounded-r text-sm font-semibold">SUBSCRIBE !</button>
+                    </div>
+                    <div class="mt-6">
+                        <h5 class="font-bold text-secondary mb-3 text-sm">PAYMENTS</h5>
+                        <div class="flex gap-3 flex-wrap">
+                            <img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa" class="h-8 w-auto">
+                            <img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="Mastercard" class="h-8 w-auto">
+                            <img src="https://img.icons8.com/color/48/000000/amex.png" alt="Amex" class="h-8 w-auto">
+                            <img src="https://img.icons8.com/color/48/000000/paypal.png" alt="PayPal" class="h-8 w-auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="border-t border-gray-300 pt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <p class="text-gray-600 text-sm">
+                    Copyright © 2021 <a href="#" class="text-gray-600 hover:text-primary">HasThemes</a> | Built with <a href="#" class="text-primary">Indecor</a> By <a href="#" class="text-primary">HasThemes</a>.
+                </p>
+                <ul class="flex gap-6 text-sm">
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">About Us</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">Customer Services</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">Terms & Conditions</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const menuButton = document.querySelector('button:has(svg[viewBox="0 0 24 24"]):not([class*="p-2 hover"])');
+        
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

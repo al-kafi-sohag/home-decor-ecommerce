@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 44" width="180" height="44" role="img" aria-label="Indecor">
+    <rect x="2" y="6" width="32" height="32" rx="8" fill="#ff6b6b"/>
+    <path d="M10 24 L18 15 L26 24 V31 H10 Z" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    <text x="44" y="30" font-family="'Playfair Display', Georgia, serif" font-size="23" font-weight="700" fill="#1a1a1a">indecor<tspan fill="#ff6b6b">.</tspan></text>
+</svg>
