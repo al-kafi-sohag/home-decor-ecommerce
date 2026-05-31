@@ -1,0 +1,84 @@
+/*
+|--------------------------------------------------------------------------
+| Backend (admin panel) styles
+|--------------------------------------------------------------------------
+|
+| Kept deliberately small. The admin UI is built mostly with Tailwind
+| utility classes in the blades; this file holds a couple of shared
+| primitives (theme tokens + form helpers) used across the auth screens.
+|
+*/
+
+:root {
+    --admin-primary: #4f46e5;
+    --admin-primary-hover: #4338ca;
+    --admin-bg: #f1f5f9;
+    --admin-surface: #ffffff;
+    --admin-border: #e2e8f0;
+    --admin-text: #0f172a;
+    --admin-muted: #64748b;
+}
+
+/* Tailwind v4 ships buttons with the default cursor; restore the pointer. */
+button:not(:disabled),
+[role="button"]:not(:disabled),
+label[for] {
+    cursor: pointer;
+}
+
+.admin-input {
+    width: 100%;
+    border: 1px solid var(--admin-border);
+    border-radius: 0.75rem;
+    padding: 0.75rem 0.95rem 0.75rem 2.75rem;
+    font-size: 0.925rem;
+    color: var(--admin-text);
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.admin-input.no-icon { padding-left: 0.95rem; }
+.admin-input::placeholder { color: #94a3b8; }
+.admin-input:hover { border-color: #cbd5e1; }
+.admin-input:focus {
+    outline: none;
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+.admin-input.is-invalid {
+    border-color: #f43f5e;
+}
+.admin-input.is-invalid:focus {
+    box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12);
+}
+
+.admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background-image: linear-gradient(to right, #4f46e5, #6d28d9);
+    box-shadow: 0 8px 20px -8px rgba(79, 70, 229, 0.6);
+    transition: filter 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
+}
+.admin-btn:hover {
+    filter: brightness(1.07);
+    box-shadow: 0 10px 24px -8px rgba(79, 70, 229, 0.7);
+}
+.admin-btn:active { transform: translateY(1px); }
+
+.admin-field-icon {
+    position: absolute;
+    left: 0.95rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.05rem;
+    height: 1.05rem;
+    color: var(--admin-muted);
+    pointer-events: none;
+}
