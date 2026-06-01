@@ -1,0 +1,92 @@
+name: CI CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, pdo_sqlite, bcmath, curl, dom, fileinfo, json, tokenizer, xml
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare environment
+        run: |
+          if [ ! -f .env ]; then
+            cp .env.example .env
+          fi
+          php artisan key:generate
+
+      - name: Run test suite
+        run: php artisan test --no-interaction
+
+  deploy:
+    name: Deploy To Server
+    runs-on: ubuntu-latest
+    needs: ci
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: ${{ secrets.SSH_PORT }}
+          fingerprint: ${{ secrets.SSH_FINGERPRINT }}
+          script_stop: true
+          script: |
+            set -e
+            cd "${{ secrets.DEPLOY_PATH }}"
+
+            git fetch origin main
+            git checkout main
+            git pull --ff-only origin main
+
+            if [ ! -f .env ] && [ -f .env.example ]; then
+              cp .env.example .env
+            fi
+
+            if [ -f .env ] && [ -f .env.example ]; then
+              while IFS= read -r line || [ -n "$line" ]; do
+                case "$line" in
+                  ""|\#*) continue ;;
+                esac
+                key="${line%%=*}"
+                if ! grep -q "^${key}=" .env; then
+                  printf "\n%s\n" "$line" >> .env
+                fi
+              done < .env.example
+            fi
+
+            composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
+
+            php artisan migrate --force
+            php artisan optimize:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
