@@ -85,15 +85,21 @@ jobs:
             fi
 
             if [ -f .env ] && [ -f .env.example ]; then
-              while IFS= read -r line || [ -n "$line" ]; do
-                case "$line" in
-                  ""|\#*) continue ;;
-                esac
-                key="${line%%=*}"
-                if ! grep -q "^${key}=" .env; then
-                  printf "\n%s\n" "$line" >> .env
-                fi
-              done < .env.example
+              awk -F= '
+                NR==FNR {
+                  if ($0 ~ /^[[:space:]]*#/ || $0 ~ /^[[:space:]]*$/) next
+                  key=$1
+                  gsub(/^[[:space:]]+|[[:space:]]+$/, "", key)
+                  existing[key]=1
+                  next
+                }
+                {
+                  if ($0 ~ /^[[:space:]]*#/ || $0 ~ /^[[:space:]]*$/) next
+                  key=$1
+                  gsub(/^[[:space:]]+|[[:space:]]+$/, "", key)
+                  if (!(key in existing)) print $0
+                }
+              ' .env .env.example >> .env
             fi
 
             composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
