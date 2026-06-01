@@ -1,6 +1,80 @@
 import $ from 'jquery';
-import { createIcons, icons } from 'lucide';
+import {
+    ArrowLeft,
+    ArrowRight,
+    BarChart3,
+    Bell,
+    ChevronDown,
+    Download,
+    Eye,
+    EyeOff,
+    KeyRound,
+    Layers,
+    LayoutDashboard,
+    LayoutGrid,
+    LifeBuoy,
+    LoaderCircle,
+    Lock,
+    LogIn,
+    LogOut,
+    Mail,
+    Package,
+    PanelLeft,
+    Plus,
+    Search,
+    Send,
+    Settings,
+    ShieldCheck,
+    ShoppingBag,
+    Sofa,
+    Star,
+    TicketPercent,
+    Trash2,
+    TrendingDown,
+    TrendingUp,
+    Upload,
+    User,
+    Users,
+} from 'lucide';
 import { initImageUploaders } from './uploader.js';
+const adminIcons = {
+    'arrow-left': ArrowLeft,
+    'arrow-right': ArrowRight,
+    'bar-chart-3': BarChart3,
+    bell: Bell,
+    'chevron-down': ChevronDown,
+    download: Download,
+    eye: Eye,
+    'eye-off': EyeOff,
+    'key-round': KeyRound,
+    layers: Layers,
+    'layout-dashboard': LayoutDashboard,
+    'layout-grid': LayoutGrid,
+    'life-buoy': LifeBuoy,
+    'loader-circle': LoaderCircle,
+    lock: Lock,
+    'log-in': LogIn,
+    'log-out': LogOut,
+    mail: Mail,
+    package: Package,
+    'panel-left': PanelLeft,
+    plus: Plus,
+    search: Search,
+    send: Send,
+    settings: Settings,
+    'shield-check': ShieldCheck,
+    'shopping-bag': ShoppingBag,
+    sofa: Sofa,
+    star: Star,
+    'ticket-percent': TicketPercent,
+    'trash-2': Trash2,
+    'trending-down': TrendingDown,
+    'trending-up': TrendingUp,
+    upload: Upload,
+    user: User,
+    users: Users,
+};
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +88,7 @@ import { initImageUploaders } from './uploader.js';
 
 $(function () {
     // Render every <i data-lucide="..."> placeholder as an inline SVG icon.
-    createIcons({ icons });
+    createIcons({ icons: adminIcons });
 
     // Wire up any reusable image uploaders present on the page.
     initImageUploaders();
@@ -82,7 +156,7 @@ $(function () {
             .attr('title', reveal ? 'Hide password' : 'Show password')
             .html('<i data-lucide="' + (reveal ? 'eye-off' : 'eye') + '" class="h-4 w-4"></i>');
 
-        createIcons({ icons });
+        createIcons({ icons: adminIcons });
 
         // Keep focus + caret in the field for a smooth flow.
         const el = $field.get(0);
