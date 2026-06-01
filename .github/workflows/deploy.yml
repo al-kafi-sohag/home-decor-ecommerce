@@ -75,9 +75,10 @@ jobs:
             set -e
             cd "${{ secrets.DEPLOY_PATH }}"
 
-            git fetch origin main
-            git checkout main
-            git pull --ff-only origin main
+            git fetch --prune origin main
+            git checkout -f main || git checkout -f -b main origin/main
+            git reset --hard origin/main
+            git clean -fd
 
             if [ ! -f .env ] && [ -f .env.example ]; then
               cp .env.example .env
