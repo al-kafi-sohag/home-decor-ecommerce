@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Do not rewrite ACME/AutoSSL validation requests.
+    RewriteRule ^\.well-known/ - [L]
+
+    # Prevent rewrite loop if request is already in /public.
+    RewriteRule ^public/ - [L]
+
+    # Route everything else through /public.
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
