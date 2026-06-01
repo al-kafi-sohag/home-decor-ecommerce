@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import {
+    createIcons,
     ArrowLeft,
     ArrowRight,
     BarChart3,
@@ -39,6 +40,7 @@ import {
     Users,
 } from 'lucide';
 import { initImageUploaders } from './uploader.js';
+// Lucide resolves data-lucide="log-in" via PascalCase (LogIn), so keys must be component names.
 const adminIcons = {
     ArrowLeft,
     ArrowRight,
