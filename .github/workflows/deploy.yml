@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -40,7 +40,7 @@ jobs:
           php artisan key:generate
 
       - name: Run test suite
-        run: php artisan test --no-interaction
+        run: php artisan test
 
   deploy:
     name: Deploy To Server
