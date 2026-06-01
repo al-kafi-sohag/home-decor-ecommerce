@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { createIcons, icons } from 'lucide';
+import { initImageUploaders } from './uploader.js';
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,54 @@ import { createIcons, icons } from 'lucide';
 $(function () {
     // Render every <i data-lucide="..."> placeholder as an inline SVG icon.
     createIcons({ icons });
+
+    // Wire up any reusable image uploaders present on the page.
+    initImageUploaders();
+
+    // ---------------------------------------------------------------------
+    // Sidebar toggle
+    //
+    // On desktop (>=1024px) the toggle collapses/expands the rail and the
+    // choice is remembered in localStorage. On smaller screens it slides the
+    // sidebar in over a backdrop instead.
+    // ---------------------------------------------------------------------
+    const $body = $('body');
+    const COLLAPSE_KEY = 'admin.sidebar.collapsed';
+
+    if (localStorage.getItem(COLLAPSE_KEY) === '1') {
+        $body.addClass('admin-sidebar-collapsed');
+    }
+
+    $(document).on('click', '[data-sidebar-toggle]', function () {
+        if (window.matchMedia('(max-width: 1023px)').matches) {
+            $body.toggleClass('admin-sidebar-open');
+            return;
+        }
+        $body.toggleClass('admin-sidebar-collapsed');
+        localStorage.setItem(COLLAPSE_KEY, $body.hasClass('admin-sidebar-collapsed') ? '1' : '0');
+    });
+
+    $(document).on('click', '[data-sidebar-close]', function () {
+        $body.removeClass('admin-sidebar-open');
+    });
+
+    // ---------------------------------------------------------------------
+    // Dropdowns (user menu, etc.)
+    // ---------------------------------------------------------------------
+    $(document).on('click', '[data-dropdown-toggle]', function (e) {
+        e.stopPropagation();
+        const $menu = $(this).closest('[data-dropdown]').find('[data-dropdown-menu]');
+        $('[data-dropdown-menu]').not($menu).addClass('hidden');
+        $menu.toggleClass('hidden');
+    });
+
+    $(document).on('click', function () {
+        $('[data-dropdown-menu]').addClass('hidden');
+    });
+
+    $(document).on('click', '[data-dropdown-menu]', function (e) {
+        e.stopPropagation();
+    });
 
     // Password visibility toggle for auth forms.
     //

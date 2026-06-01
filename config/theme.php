@@ -32,6 +32,44 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Admin (backend) Palette
+    |--------------------------------------------------------------------------
+    |
+    | The admin panel is themed with the same CSS-variable approach as the
+    | storefront so the two stay visually cohesive. The brand accent defaults
+    | to the storefront's primary colour; everything else is a professional
+    | slate-based neutral set. Injected via the backend theme partial.
+    |
+    */
+
+    'admin' => [
+        'admin-primary'        => env('THEME_PRIMARY', '#ff6b6b'),
+        'admin-primary-strong' => env('THEME_ADMIN_PRIMARY_STRONG', '#ef4d4d'),
+        'admin-primary-soft'   => env('THEME_ADMIN_PRIMARY_SOFT', '#fff1f1'),
+        'admin-primary-rgb'    => env('THEME_PRIMARY_RGB', '255, 107, 107'),
+
+        'admin-ink'            => '#0f172a',
+        'admin-ink-soft'       => '#334155',
+        'admin-muted'          => '#64748b',
+        'admin-faint'          => '#94a3b8',
+
+        'admin-bg'             => '#f5f7fa',
+        'admin-surface'        => '#ffffff',
+        'admin-surface-alt'    => '#f8fafc',
+        'admin-border'         => '#e7ebf0',
+
+        'admin-success'        => '#16a34a',
+        'admin-success-soft'   => '#e8f6ee',
+        'admin-warning'        => '#b45309',
+        'admin-warning-soft'   => '#fdf3e3',
+        'admin-danger'         => '#dc2626',
+        'admin-danger-soft'    => '#fdecec',
+        'admin-info'           => '#2563eb',
+        'admin-info-soft'      => '#e9f0fe',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Typography
     |--------------------------------------------------------------------------
     */

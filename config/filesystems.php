@@ -41,7 +41,11 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            // Root-relative so uploaded media resolves against whatever origin
+            // the app is served from (localhost, 127.0.0.1:8000, prod domain…),
+            // instead of being pinned to APP_URL. Set ASSET_URL/a CDN disk if
+            // assets ever need to live on a different host.
+            'url' => env('ASSET_URL') ? rtrim(env('ASSET_URL'), '/').'/storage' : '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,

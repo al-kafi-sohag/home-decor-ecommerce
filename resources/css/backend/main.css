@@ -3,28 +3,303 @@
 | Backend (admin panel) styles
 |--------------------------------------------------------------------------
 |
-| Kept deliberately small. The admin UI is built mostly with Tailwind
-| utility classes in the blades; this file holds a couple of shared
-| primitives (theme tokens + form helpers) used across the auth screens.
+| The admin UI is built mostly with Tailwind utility classes in the blades.
+| This file holds the shared design tokens and a small set of component
+| primitives (sidebar links, cards, badges, form controls) that are reused
+| across screens. Every accent colour is driven by the CSS variables that
+| the backend theme partial injects, so the panel re-themes from a single
+| source of truth — exactly like the storefront.
 |
 */
 
 :root {
-    --admin-primary: #4f46e5;
-    --admin-primary-hover: #4338ca;
-    --admin-bg: #f1f5f9;
-    --admin-surface: #ffffff;
-    --admin-border: #e2e8f0;
-    --admin-text: #0f172a;
+    /* Brand accent (overridden at runtime by backend/partials/theme.blade.php) */
+    --admin-primary: #ff6b6b;
+    --admin-primary-strong: #ef4d4d;
+    --admin-primary-soft: #fff1f1;
+    --admin-primary-rgb: 255, 107, 107;
+
+    /* Text */
+    --admin-ink: #0f172a;
+    --admin-ink-soft: #334155;
     --admin-muted: #64748b;
+    --admin-faint: #94a3b8;
+
+    /* Surfaces */
+    --admin-bg: #f5f7fa;
+    --admin-surface: #ffffff;
+    --admin-surface-alt: #f8fafc;
+    --admin-border: #e7ebf0;
+
+    /* Status */
+    --admin-success: #16a34a;
+    --admin-success-soft: #e8f6ee;
+    --admin-warning: #b45309;
+    --admin-warning-soft: #fdf3e3;
+    --admin-danger: #dc2626;
+    --admin-danger-soft: #fdecec;
+    --admin-info: #2563eb;
+    --admin-info-soft: #e9f0fe;
+
+    /* Geometry */
+    --admin-radius: 0.75rem;
+    --admin-radius-lg: 1rem;
+    --admin-shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+    --admin-shadow-panel: 0 8px 24px rgba(15, 23, 42, 0.08);
+
+    /* Layout */
+    --admin-sidebar-w: 17rem;
 }
 
 /* Tailwind v4 ships buttons with the default cursor; restore the pointer. */
 button:not(:disabled),
 [role="button"]:not(:disabled),
+summary,
 label[for] {
     cursor: pointer;
 }
+
+/*
+|--------------------------------------------------------------------------
+| App shell
+|--------------------------------------------------------------------------
+*/
+
+.admin-shell {
+    background-color: var(--admin-bg);
+}
+
+/* Subtle decorative grid + brand glow behind the content. */
+.admin-shell::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 12% 90%, rgba(var(--admin-primary-rgb), 0.06) 0%, transparent 42%),
+        radial-gradient(circle at 88% 8%, rgba(15, 118, 110, 0.04) 0%, transparent 42%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.admin-main {
+    position: relative;
+    z-index: 1;
+}
+
+/* Collapsed sidebar state (toggled from the header button). */
+.admin-sidebar {
+    width: var(--admin-sidebar-w);
+    transition: width 0.25s ease, transform 0.25s ease;
+}
+
+body.admin-sidebar-collapsed .admin-sidebar {
+    width: 0;
+    transform: translateX(-100%);
+    overflow: hidden;
+}
+
+@media (max-width: 1023px) {
+    .admin-sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 50;
+        transform: translateX(-100%);
+        box-shadow: var(--admin-shadow-panel);
+    }
+    body.admin-sidebar-open .admin-sidebar {
+        transform: translateX(0);
+    }
+    .admin-sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        background: rgba(15, 23, 42, 0.45);
+    }
+    body.admin-sidebar-open .admin-sidebar-backdrop {
+        display: block;
+    }
+}
+
+/* Slim scrollbar inside the sidebar nav. */
+.admin-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--admin-border) transparent;
+}
+.admin-scroll::-webkit-scrollbar { width: 6px; }
+.admin-scroll::-webkit-scrollbar-thumb {
+    background: var(--admin-border);
+    border-radius: 999px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Sidebar navigation
+|--------------------------------------------------------------------------
+*/
+
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 0.625rem;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--admin-ink-soft);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.admin-nav-link:hover {
+    background-color: var(--admin-surface-alt);
+    color: var(--admin-ink);
+}
+.admin-nav-link .admin-nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.9rem;
+    width: 1.9rem;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+    background-color: var(--admin-surface-alt);
+    color: var(--admin-muted);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.admin-nav-link.is-active {
+    background-color: var(--admin-primary-soft);
+    color: var(--admin-primary-strong);
+    font-weight: 600;
+}
+.admin-nav-link.is-active .admin-nav-icon {
+    background-color: var(--admin-primary);
+    color: #fff;
+}
+.admin-nav-chevron {
+    margin-left: auto;
+    height: 1rem;
+    width: 1rem;
+    color: var(--admin-faint);
+    transition: transform 0.2s ease;
+}
+details[open] > summary .admin-nav-chevron {
+    transform: rotate(180deg);
+}
+.admin-nav-sub {
+    margin: 0.35rem 0 0.15rem;
+    padding-left: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    border-left: 1px solid var(--admin-border);
+    margin-left: 1.2rem;
+}
+.admin-nav-sublink {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 0.5rem;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.825rem;
+    font-weight: 500;
+    color: var(--admin-muted);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.admin-nav-sublink:hover {
+    background-color: var(--admin-surface-alt);
+    color: var(--admin-ink);
+}
+.admin-nav-sublink.is-active {
+    color: var(--admin-primary-strong);
+    font-weight: 600;
+}
+.admin-nav-sublink .dot {
+    height: 0.4rem;
+    width: 0.4rem;
+    border-radius: 999px;
+    background-color: currentColor;
+    flex-shrink: 0;
+    opacity: 0.55;
+}
+.admin-nav-heading {
+    padding: 0 0.7rem;
+    margin: 1.1rem 0 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--admin-faint);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Cards / panels
+|--------------------------------------------------------------------------
+*/
+
+.admin-card {
+    background-color: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: var(--admin-radius-lg);
+    box-shadow: var(--admin-shadow-card);
+}
+
+.admin-stat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.75rem;
+    width: 2.75rem;
+    border-radius: 0.85rem;
+}
+
+/* Trend pills shown on stat cards. */
+.admin-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+}
+.admin-trend.up { color: var(--admin-success); background: var(--admin-success-soft); }
+.admin-trend.down { color: var(--admin-danger); background: var(--admin-danger-soft); }
+
+/*
+|--------------------------------------------------------------------------
+| Status badges
+|--------------------------------------------------------------------------
+*/
+
+.admin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+}
+.admin-badge::before {
+    content: '';
+    height: 0.42rem;
+    width: 0.42rem;
+    border-radius: 999px;
+    background-color: currentColor;
+}
+.admin-badge.success { color: var(--admin-success); background: var(--admin-success-soft); }
+.admin-badge.warning { color: var(--admin-warning); background: var(--admin-warning-soft); }
+.admin-badge.danger  { color: var(--admin-danger);  background: var(--admin-danger-soft); }
+.admin-badge.info    { color: var(--admin-info);    background: var(--admin-info-soft); }
+
+/*
+|--------------------------------------------------------------------------
+| Form controls (shared by auth screens + dashboard forms)
+|--------------------------------------------------------------------------
+*/
 
 .admin-input {
     width: 100%;
@@ -32,7 +307,7 @@ label[for] {
     border-radius: 0.75rem;
     padding: 0.75rem 0.95rem 0.75rem 2.75rem;
     font-size: 0.925rem;
-    color: var(--admin-text);
+    color: var(--admin-ink);
     background-color: #fff;
     box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
@@ -43,7 +318,7 @@ label[for] {
 .admin-input:focus {
     outline: none;
     border-color: var(--admin-primary);
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+    box-shadow: 0 0 0 4px rgba(var(--admin-primary-rgb), 0.14);
 }
 .admin-input.is-invalid {
     border-color: #f43f5e;
@@ -62,13 +337,13 @@ label[for] {
     border-radius: 0.75rem;
     font-weight: 600;
     color: #fff;
-    background-image: linear-gradient(to right, #4f46e5, #6d28d9);
-    box-shadow: 0 8px 20px -8px rgba(79, 70, 229, 0.6);
+    background-color: var(--admin-primary);
+    box-shadow: 0 8px 20px -8px rgba(var(--admin-primary-rgb), 0.6);
     transition: filter 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
 }
 .admin-btn:hover {
-    filter: brightness(1.07);
-    box-shadow: 0 10px 24px -8px rgba(79, 70, 229, 0.7);
+    filter: brightness(1.05);
+    box-shadow: 0 10px 24px -8px rgba(var(--admin-primary-rgb), 0.7);
 }
 .admin-btn:active { transform: translateY(1px); }
 
@@ -81,4 +356,122 @@ label[for] {
     height: 1.05rem;
     color: var(--admin-muted);
     pointer-events: none;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Image uploader / cropper modal
+|--------------------------------------------------------------------------
+*/
+
+.uploader-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+.uploader-modal.hidden { display: none; }
+
+.uploader-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+}
+
+.uploader-modal__panel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    max-height: 92vh;
+    width: 100%;
+    max-width: 40rem;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    border-radius: var(--admin-radius-lg);
+    box-shadow: var(--admin-shadow-panel);
+}
+
+.uploader-modal__head,
+.uploader-modal__foot {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1.25rem;
+}
+.uploader-modal__head {
+    justify-content: space-between;
+    border-bottom: 1px solid var(--admin-border);
+}
+.uploader-modal__head h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--admin-ink);
+}
+.uploader-modal__head button[data-cropper-cancel] {
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--admin-faint);
+}
+.uploader-modal__head button[data-cropper-cancel]:hover { color: var(--admin-ink); }
+
+.uploader-modal__body {
+    overflow: auto;
+    max-height: 64vh;
+    padding: 1rem;
+    background: var(--admin-surface-alt);
+}
+.uploader-modal__body img {
+    display: block;
+    max-width: 100%;
+}
+
+.uploader-modal__foot {
+    justify-content: flex-end;
+    gap: 0.5rem;
+    border-top: 1px solid var(--admin-border);
+}
+.uploader-modal .btn-ghost,
+.uploader-modal .btn-primary {
+    padding: 0.55rem 1.05rem;
+    border-radius: 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: filter 0.15s ease, background-color 0.15s ease;
+}
+.uploader-modal .btn-ghost {
+    border: 1px solid var(--admin-border);
+    background: #fff;
+    color: var(--admin-ink-soft);
+}
+.uploader-modal .btn-ghost:hover { background: var(--admin-surface-alt); }
+.uploader-modal .btn-primary {
+    border: 1px solid var(--admin-primary);
+    background: var(--admin-primary);
+    color: #fff;
+}
+.uploader-modal .btn-primary:hover { filter: brightness(1.05); }
+.uploader-modal .btn-primary[disabled] { opacity: 0.6; cursor: default; }
+
+/* Round crop guides when the target is a circular avatar. */
+.uploader-modal.is-circle .cropper-view-box,
+.uploader-modal.is-circle .cropper-face {
+    border-radius: 50%;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Entrance animations
+|--------------------------------------------------------------------------
+*/
+
+.admin-fade-up {
+    opacity: 0;
+    animation: adminFadeUp 0.5s ease forwards;
+}
+@keyframes adminFadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

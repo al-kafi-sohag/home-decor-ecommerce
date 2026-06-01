@@ -4,6 +4,9 @@ use App\Http\Controllers\Backend\Auth\ForgotPasswordController;
 use App\Http\Controllers\Backend\Auth\LoginController;
 use App\Http\Controllers\Backend\Auth\ResetPasswordController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\Media\MediaUploadController;
+use App\Http\Controllers\Backend\Profile\PasswordController;
+use App\Http\Controllers\Backend\Profile\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +44,18 @@ Route::prefix('admin')->name('backend.')->group(function () {
         Route::post('logout', [LoginController::class, 'destroy'])->name('auth.logout');
 
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Profile management.
+        Route::controller(ProfileController::class)->group(function () {
+            Route::get('profile', 'edit')->name('profile.edit');
+            Route::put('profile', 'update')->name('profile.update');
+        });
+
+        Route::put('profile/password', [PasswordController::class, 'update'])->name('profile.password.update');
+
+        // Reusable AJAX media uploader (model-agnostic temporary uploads).
+        Route::post('media/upload', [MediaUploadController::class, 'store'])->name('media.upload');
+        Route::delete('media/upload/{token}', [MediaUploadController::class, 'destroy'])->name('media.upload.destroy');
     });
 
     // Convenience redirect for the bare /admin URL.
