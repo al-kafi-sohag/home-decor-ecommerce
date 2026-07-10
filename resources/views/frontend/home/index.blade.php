@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এইচবি গ্যালারি - নির্মাণাধীন</title>
+    <title>HB GALLERY - Under Construction</title>
     <style>
         * {
             margin: 0;
@@ -117,7 +117,7 @@
 
 <body>
     <div class="container">
-        <h1>এইচবি গ্যালারি</h1>
+        <h1>HB GALLERY</h1>
         <div class="status">নির্মাণাধীন</div>
         <div class="divider"></div>
         <p class="message">
