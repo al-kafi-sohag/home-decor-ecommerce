@@ -127,7 +127,7 @@
         <div class="whatsapp-section">
             <div class="whatsapp-label">যোগাযোগ করুন</div>
             <a href="https://wa.me/8801343591032" class="whatsapp-link" target="_blank">
-                হোয়াটসঅ্যাপ: +৮৮০১৩৪৩৫৯১০৩২
+                হোয়াটসঅ্যাপ: 01343591032
             </a>
         </div>
     </div>
